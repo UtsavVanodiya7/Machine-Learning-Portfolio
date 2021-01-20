@@ -4,7 +4,7 @@ from argparse import ArgumentParser
 
 from sklearn.metrics import accuracy_score
 
-from text_classification import load_data, preprocess
+from text_classification import load_data, preprocess_1, preprocess_2
 
 if __name__ == '__main__':
     parser = ArgumentParser()
@@ -25,7 +25,8 @@ if __name__ == '__main__':
     with open(prefix + '.vec', 'rb') as file:
         vectorizer = pickle.load(file)
 
-    new_documents = preprocess(documents)
+    # new_documents = preprocess_1(documents)
+    new_documents = preprocess_2(documents)
     test_labels = label_encoder.transform(labels)
     acc_score = accuracy_score(test_labels, model.predict(vectorizer.transform(new_documents)))
     print(f"Accuracy : {acc_score}")
