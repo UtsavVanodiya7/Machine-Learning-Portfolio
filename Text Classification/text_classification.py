@@ -1,6 +1,7 @@
 import datetime
 import os
 import pickle
+import re
 import traceback
 
 import pandas as pd
@@ -9,6 +10,7 @@ from argparse import ArgumentParser
 
 from sklearn import svm
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from nltk.corpus import stopwords
@@ -42,16 +44,7 @@ def load_data(input_file):
     return documents, labels
 
 
-def preprocess(documents, labels, output_dir):
-    os.makedirs(output_dir, exist_ok=True)
-
-    # Encode Labels
-    label_encoder = LabelEncoder()
-    new_labels = label_encoder.fit_transform(labels)
-
-    with open(output_dir + os.sep + output_dir + '.le', 'wb') as file:
-        pickle.dump(label_encoder, file)
-
+def preprocess_1(documents):
     # Remove noise from the documents
     stop_words = set(stopwords.words('english'))
     lemmatizer = WordNetLemmatizer()
@@ -59,10 +52,32 @@ def preprocess(documents, labels, output_dir):
     new_documents = []
 
     for doc in documents:
-        words = [lemmatizer.lemmatize(word) for word in doc.split() if word not in stop_words]
+        words = [lemmatizer.lemmatize(word) for word in doc.lower().split() if word not in stop_words]
         new_documents.append(" ".join(words))
 
-    return new_documents, new_labels
+    return new_documents
+
+
+def preprocess_2(documents):
+    # Remove noise from the documents
+    stop_words = set(stopwords.words('english'))
+    lemmatizer = WordNetLemmatizer()
+
+    new_documents = []
+
+    digit = re.compile(r"[0-9]+(\.[0-9]+)?")
+    email = re.compile(r"[a-zA-Z_0-9.]@[a-zA-Z0-9]\.[a-zA-Z]+")
+    punctuations = re.compile(r"[\*\+\-=@#\$%~`\^&\(\))_\{\[\}\]:;\"'<,>\.\?\/]{2,}")
+
+    for doc in documents:
+        doc = digit.sub(" ", doc)
+        doc = email.sub(" ", doc)
+        doc = punctuations.sub(" ", doc)
+
+        words = [lemmatizer.lemmatize(word) for word in doc.lower().split() if word not in stop_words]
+        new_documents.append(" ".join(words))
+
+    return new_documents
 
 
 def train_model(documents, labels, output_dir):
@@ -70,7 +85,7 @@ def train_model(documents, labels, output_dir):
     train_data, test_data, train_labels, test_labels = train_test_split(documents, labels, test_size=0.20,
                                                                         random_state=10)
     print("Building TF-IDF matrix.")
-    tfidf_vectorizer = TfidfVectorizer()
+    tfidf_vectorizer = TfidfVectorizer(lowercase=False)
     tfidf_vector = tfidf_vectorizer.fit_transform(train_data)
 
     with open(output_dir + os.sep + output_dir + '.vec', 'wb') as file:
@@ -96,8 +111,9 @@ def train_model(documents, labels, output_dir):
     print("\nTesting Model.")
 
     test_tfidf_vector = tfidf_vectorizer.transform(test_data)
-    score = model.score(test_tfidf_vector, test_labels)
-    print(f"Accuracy : {score}")
+
+    acc_score = accuracy_score(test_labels, model.predict(test_tfidf_vector))
+    print(f"Accuracy : {acc_score}")
 
 
 if __name__ == '__main__':
@@ -107,7 +123,16 @@ if __name__ == '__main__':
     parser.add_argument('-o', '--output_dir', required=True, help="Directory path to store model.")
 
     args = parser.parse_args()
-
     documents, labels = load_data(args.input_file)
-    new_documents, new_labels = preprocess(documents, labels, args.output_dir)
+    os.makedirs(args.output_dir, exist_ok=True)
+
+    # Encode Labels
+    label_encoder = LabelEncoder()
+    new_labels = label_encoder.fit_transform(labels)
+
+    with open(args.output_dir + os.sep + args.output_dir + '.le', 'wb') as file:
+        pickle.dump(label_encoder, file)
+
+    # new_documents = preprocess_1(documents)
+    new_documents = preprocess_2(documents)
     train_model(new_documents, new_labels, args.output_dir)
