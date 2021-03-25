@@ -3,7 +3,8 @@ This project was developed as a part of Durham College's AI course. It contains 
 Project is complete. We were 4 people in a group. My part was working on computer vision. 
 
 # Dataset Description
-We were having 5 types of objects: top, skirts, trousers, dresses, outerwear.
+We were having 5 types of objects: top, skirts, trousers, dresses, outerwear. 
+Exploratory Data Analysis
 ![Object Detection Method](https://github.com/UtsavVanodiya7/Machine-Learning-Portfolio/blob/main/Object%20Detection/images/EDA.JPG?raw=true)
 
 # Methodology
