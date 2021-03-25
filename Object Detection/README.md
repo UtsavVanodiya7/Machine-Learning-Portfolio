@@ -22,6 +22,10 @@ Detailed output can be seen in below pictures.
 ![Object Detection Method](https://github.com/UtsavVanodiya7/Machine-Learning-Portfolio/blob/main/Object%20Detection/images/Architecture%201.JPG?raw=true)
 ![Object Detection Method](https://github.com/UtsavVanodiya7/Machine-Learning-Portfolio/blob/main/Object%20Detection/images/Output%20Examples.JPG?raw=true)
 
+# Testing Object Detection
+Use testing-object-detection notebook to test. Change model file path and other mentioned path.
+
+
 
 
 
