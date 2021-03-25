@@ -10,9 +10,12 @@ After that cropped image based on face location and performed image classificati
 Then use simple logic to verify the output.
 
 Detailed output can be seen in below pictures.
+(Note: full details can be found in report.pdf)
 
-# Object Detection
-![alt text](https://github.com/UtsavVanodiya7/Machine-Learning-Portfolio/blob/main/Object%20Detection/images/Architecture.JPG?raw=true)
+![Object Detection Method](https://github.com/UtsavVanodiya7/Machine-Learning-Portfolio/blob/main/Object%20Detection/images/Architecture.JPG?raw=true)
+![Object Detection Method](https://github.com/UtsavVanodiya7/Machine-Learning-Portfolio/blob/main/Object%20Detection/images/Image splitting.JPG?raw=true)
+![Object Detection Method](https://github.com/UtsavVanodiya7/Machine-Learning-Portfolio/blob/main/Object%20Detection/images/Architecture 1.JPG?raw=true)
+![Object Detection Method](https://github.com/UtsavVanodiya7/Machine-Learning-Portfolio/blob/main/Object%20Detection/images/Output Examples.JPG?raw=true)
 
 
 
