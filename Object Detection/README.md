@@ -12,7 +12,7 @@ Then use simple logic to verify the output.
 Detailed output can be seen in below pictures.
 
 # Object Detection
-
+![alt text](https://github.com/UtsavVanodiya7/Machine-Learning-Portfolio/Object-Detection/images/architecture.jpg?raw=true)
 
 
 
