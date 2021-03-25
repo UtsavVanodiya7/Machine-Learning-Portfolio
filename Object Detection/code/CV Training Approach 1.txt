@@ -1,0 +1,37 @@
+Approach: Using face detection for better accuracy.
+
+1. Use face detection to crop image.
+	-> We will crop area below face. 
+	-> Crop remaining part from center of face's rectangle and based on
+	max width and height of all bounding boxes.
+	
+2. We will also calculate average width and height of each category at the beginning. 
+	(From training and testing data both)
+   -> Based on that, we will crop image again and give it to the image classifier.
+   -> So, we have 5 categories, so we will make max 5 sub images at the end and do prediction on it.
+
+3. In case when we are not able to detect face even if it exists.
+	-> We can apply normal search based on average width and height values.
+	-> We can set one fix size (from below face to bottom) to crop image and we will slide by few pixels.
+	-> Position of categories will remain same for any person. So, no need to change it.
+	
+4. Final check based on distance with face object.
+	-> Let's say sub image of trousers/skirt has been predicted as 
+	top, outwear or dress, we can simply discard it.
+	-> Same for top and outwear images too. If that image is predicted as skirt, trouser or dress,
+	we will discard it.
+	-> For dress's sub image, prediction must be dress only. 
+	
+5. Color Density of few colors(12 to 24) (This is optional, in case if we want to improve our model.)
+	-> We can build an array of color density and at the end, we can pass it to our model for 
+	final prediction based on image as well as color density. 
+
+   
+Why should we go for this approach?
+-> In our case, it is mandatory to have a person to detect a clothing object. 
+So, we can leverage pre-trained face detection model.
+-> It will improve accuracy a lot.
+-> It will reduce computation time.
+-> Our case is special, because we can definitely say that what would be the location of 
+	top/trouser, etc, based on the location of face.
+
